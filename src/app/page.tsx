@@ -47,7 +47,7 @@ export default async function Home() {
 
       <div className="w-[400px] mx-auto mt-6 flex flex-col gap-4">
         {todos.map((todo) => (
-          <div className=" flex items-center justify-between">
+          <div key={todo.id} className=" flex items-center justify-between">
             <p className={todo.done ? "line-through":""}>{todo.title}</p>
             <MarkDone disabled={todo.done} id={todo.id} markDone={markDone} />
           </div>
