@@ -16,7 +16,7 @@ function Form({
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   return (
-    <div className="flex flex-col w-[400px] gap-2 mx-auto mt-4">
+    <div className="flex flex-col w-[300px] sm:w-[400px] gap-2 mx-auto mt-4">
       <div className="flex items-center mx-auto gap-2">
         <h2>Todos with Docker</h2>
         <img src={"../docker.svg"} className="w-[40px]" alt="" />
