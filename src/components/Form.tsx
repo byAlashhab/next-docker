@@ -8,10 +8,12 @@ function Form({
   onSubmit,
   deleteAll,
 }: {
-  onSubmit: (title: string) => void;
-  deleteAll: () => void;
+  onSubmit: (title: string) => Promise<void>;
+  deleteAll: () => Promise<void>;
 }) {
   const [title, setTitle] = useState("");
+  const [addLoading, setAddLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   return (
     <div className="flex flex-col w-[400px] gap-2 mx-auto mt-4">
@@ -26,15 +28,23 @@ function Form({
         onChange={(e) => setTitle(e.target.value)}
       />
       <Button
-        onClick={() => {
-          onSubmit(title);
+        onClick={async () => {
+          setAddLoading(true);
+          await onSubmit(title);
           setTitle("");
+          setAddLoading(false);
         }}
+        disabled={addLoading}
       >
-        Add
+        {addLoading ? "..." : "Add"}
       </Button>
-      <Button variant={"destructive"} onClick={() => deleteAll()}>
-        Delete All
+
+      <Button
+        variant={"destructive"}
+        onClick={() => deleteAll()}
+        disabled={deleteLoading}
+      >
+        {deleteLoading ? "..." : "Delete All"}
       </Button>
     </div>
   );
@@ -42,13 +52,22 @@ function Form({
 
 type MarkDoneProps = ComponentProps<"button"> & {
   id: string;
-  markDone: (id: string) => void;
+  markDone: (id: string) => Promise<void>;
 };
 
 function MarkDone({ id, markDone, disabled }: MarkDoneProps) {
+  const [loading, setLoading] = useState(false);
   return (
-    <Button disabled={disabled} className="w-fit" onClick={() => markDone(id)}>
-      Done {disabled ? "" : "?"}
+    <Button
+      disabled={disabled || loading}
+      className="w-fit"
+      onClick={async () => {
+        setLoading(true);
+        await markDone(id);
+        setLoading(false);
+      }}
+    >
+      {loading ? "..." : <>Done {disabled ? "" : "?"}</>}
     </Button>
   );
 }
