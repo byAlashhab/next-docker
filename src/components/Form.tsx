@@ -41,7 +41,11 @@ function Form({
 
       <Button
         variant={"destructive"}
-        onClick={() => deleteAll()}
+        onClick={async () => {
+          setDeleteLoading(true);
+          await deleteAll();
+          setDeleteLoading(false);
+        }}
         disabled={deleteLoading}
       >
         {deleteLoading ? "..." : "Delete All"}
